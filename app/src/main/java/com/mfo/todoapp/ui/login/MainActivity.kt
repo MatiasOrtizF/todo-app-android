@@ -32,7 +32,6 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        retrofit = getRetrofit()
         initUI()
     }
 
@@ -40,8 +39,7 @@ class MainActivity: AppCompatActivity() {
         initUIState()
         binding.btnLogin.setOnClickListener() {
             val loginRequest = LoginRequest(binding.etEmail.text.toString(), binding.etPassword.text.toString())
-            /*val intent = Intent(this, TaskActivity::class.java)
-            startActivity(intent)*/
+            println(loginRequest)
             mainViewModel.authenticationUser(loginRequest)
         }
     }
@@ -60,21 +58,6 @@ class MainActivity: AppCompatActivity() {
         }
     }
 
-    private fun authenticationUser(loginRequest: LoginRequest) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val myResponse = retrofit.create(TodoApiService::class.java).authenticationUser(loginRequest)
-            println(myResponse)
-        }
-    }
-
-    private fun getRetrofit(): Retrofit {
-        return Retrofit
-            .Builder()
-            .baseUrl("http://192.168.65.1:8080/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
     private fun loadingState() {
         binding.pb.isVisible = true
     }
@@ -86,5 +69,12 @@ class MainActivity: AppCompatActivity() {
     private fun successSate(state: MainState.Success) {
         binding.pb.isVisible = false
         binding.tokenTxt.text = state.token
+        saveToken(state.token)
+        /*val intent = Intent(this, TaskActivity::class.java)
+     startActivity(intent)*/
+    }
+
+    private fun saveToken(token: String) {
+
     }
 }

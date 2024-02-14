@@ -1,6 +1,7 @@
 package com.mfo.todoapp.data.network
 
 import com.mfo.todoapp.data.RepositoryImpl
+import com.mfo.todoapp.data.preferences.Preferences
 import com.mfo.todoapp.domain.Repository
 import dagger.Module
 import dagger.Provides
@@ -30,7 +31,7 @@ object NetworkModule {
     }
 
     @Provides
-    fun provideRepository(apiService: TodoApiService): Repository {
-        return RepositoryImpl(apiService)
+    fun provideRepository(apiService: TodoApiService, preferences: Preferences): Repository {
+        return RepositoryImpl(apiService, preferences)
     }
 }

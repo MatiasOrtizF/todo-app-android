@@ -9,4 +9,6 @@ import retrofit2.Call
 interface Repository {
     //suspend fun getAll(authorization: String): Todo
     suspend fun authenticationUser(loginRequest: LoginRequest): LoginModel?
+    suspend fun putTokenValue(token: String)
+    suspend fun getTokenValue(token: String): String?
 }
