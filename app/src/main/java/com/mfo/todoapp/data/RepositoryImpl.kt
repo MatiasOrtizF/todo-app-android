@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.datastore.preferences.preferencesDataStore
 import com.mfo.todoapp.data.network.TodoApiService
 import com.mfo.todoapp.data.network.response.LoginResponse
+import com.mfo.todoapp.data.network.response.TodoResponse
 import com.mfo.todoapp.data.preferences.Preferences
 import com.mfo.todoapp.domain.Repository
 import com.mfo.todoapp.domain.model.LoginModel
@@ -16,11 +17,12 @@ import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(private val apiService: TodoApiService, private val preferences: Preferences): Repository {
 
-    /*override suspend fun getAll(authorizaiton: String): Todo {
+    override suspend fun getAll(authorizaiton: String): List<Todo>? {
         runCatching { apiService.getAll(authorizaiton) }
-            .onSuccess { return it }
+            .onSuccess { return it.toDomain() }
             .onFailure { Log.i("mfo", "Error ocurred ${it.message}") }
-    }*/
+        return null
+    }
 
     override suspend fun authenticationUser(loginRequest: LoginRequest): LoginModel? {
         runCatching { apiService.authenticationUser(loginRequest) }

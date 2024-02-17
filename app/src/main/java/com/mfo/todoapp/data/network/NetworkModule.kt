@@ -3,6 +3,7 @@ package com.mfo.todoapp.data.network
 import com.mfo.todoapp.data.RepositoryImpl
 import com.mfo.todoapp.data.preferences.Preferences
 import com.mfo.todoapp.domain.Repository
+import com.mfo.todoapp.utils.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +21,7 @@ object NetworkModule {
     fun provideRetrofit(): Retrofit {
         return Retrofit
             .Builder()
-            .baseUrl("http://192.168.65.1:8080/api/")
+            .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

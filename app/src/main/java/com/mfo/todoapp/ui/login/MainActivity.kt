@@ -13,6 +13,8 @@ import com.mfo.todoapp.data.network.TodoApiService
 import com.mfo.todoapp.databinding.ActivityMainBinding
 import com.mfo.todoapp.domain.model.LoginRequest
 import com.mfo.todoapp.ui.home.TaskActivity
+import com.mfo.todoapp.utils.Constants
+import com.mfo.todoapp.utils.UserData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -69,6 +71,7 @@ class MainActivity: AppCompatActivity() {
     private fun successSate(state: MainState.Success) {
         binding.pb.isVisible = false
         binding.tokenTxt.text = state.token
+        UserData.token = state.token
         saveToken(state.token)
         /*val intent = Intent(this, TaskActivity::class.java)
      startActivity(intent)*/

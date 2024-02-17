@@ -12,6 +12,7 @@ import com.mfo.todoapp.databinding.ActivityMainBinding
 import com.mfo.todoapp.databinding.ActivityTaskBinding
 import com.mfo.todoapp.domain.model.LoginRequest
 import com.mfo.todoapp.ui.login.MainState
+import com.mfo.todoapp.utils.UserData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -47,14 +48,19 @@ class TaskActivity: AppCompatActivity() {
     }
 
     private fun loadingState() {
-
+        binding.pb.isVisible = true
     }
 
     private fun errorState() {
-
+        binding.pb.isVisible = false
     }
 
     private fun successSate() {
-
+        binding.pb.isVisible = false
+        /*binding.tokenTxt.text = state.token
+        UserData.token = state.token
+        saveToken(state.token)*/
+        /*val intent = Intent(this, TaskActivity::class.java)
+     startActivity(intent)*/
     }
 }
