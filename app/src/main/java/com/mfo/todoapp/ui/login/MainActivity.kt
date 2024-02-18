@@ -72,12 +72,13 @@ class MainActivity: AppCompatActivity() {
         binding.pb.isVisible = false
         binding.tokenTxt.text = state.token
         UserData.token = state.token
-        saveToken(state.token)
+        //saveToken(state.token)
+
         /*val intent = Intent(this, TaskActivity::class.java)
      startActivity(intent)*/
     }
 
-    private fun saveToken(token: String) {
+    /*private fun saveToken(token: String) {
 
-    }
+    }*/
 }
