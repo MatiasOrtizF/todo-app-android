@@ -13,7 +13,7 @@ import retrofit2.http.POST
 interface TodoApiService {
 
     @GET("todo")
-    suspend fun getAll(@Header ("Authorization") authorization: String ): TodoResponse
+    suspend fun getAll(@Header ("Authorization") authorization: String ): List<Todo>
 
     @POST("login")
     suspend fun authenticationUser(@Body loginRequest: LoginRequest): LoginResponse

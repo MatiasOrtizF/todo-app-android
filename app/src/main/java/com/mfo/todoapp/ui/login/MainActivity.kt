@@ -70,12 +70,12 @@ class MainActivity: AppCompatActivity() {
 
     private fun successSate(state: MainState.Success) {
         binding.pb.isVisible = false
-        binding.tokenTxt.text = state.token
+        //binding.tokenTxt.text = state.token
         UserData.token = state.token
         //saveToken(state.token)
 
-        /*val intent = Intent(this, TaskActivity::class.java)
-     startActivity(intent)*/
+        val intent = Intent(this, TaskActivity::class.java)
+        startActivity(intent)
     }
 
     /*private fun saveToken(token: String) {

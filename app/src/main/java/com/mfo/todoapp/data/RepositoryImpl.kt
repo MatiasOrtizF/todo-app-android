@@ -17,9 +17,12 @@ import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(private val apiService: TodoApiService, private val preferences: Preferences): Repository {
 
-    override suspend fun getAll(authorizaiton: String): List<Todo>? {
-        runCatching { apiService.getAll(authorizaiton) }
-            .onSuccess { return it.toDomain() }
+    override suspend fun getAll(authorization: String): List<Todo>? {
+        runCatching {
+            val todos = apiService.getAll(authorization)
+            todos.map { it.toDomain() }
+        }
+            .onSuccess { todos -> return todos }
             .onFailure { Log.i("mfo", "Error ocurred ${it.message}") }
         return null
     }

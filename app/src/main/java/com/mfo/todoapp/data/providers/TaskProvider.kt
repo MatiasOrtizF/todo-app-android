@@ -4,9 +4,7 @@ import com.mfo.todoapp.domain.model.Todo
 import javax.inject.Inject
 
 class TaskProvider @Inject constructor() {
-    fun getAll(): List<Todo> {
-        return listOf(
-
-        )
-    }
+    val todo = listOf<Todo>(
+        //agregar aca los todo
+    )
 }

@@ -1,5 +1,7 @@
 package com.mfo.todoapp.data.network
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.mfo.todoapp.data.RepositoryImpl
 import com.mfo.todoapp.data.preferences.Preferences
 import com.mfo.todoapp.domain.Repository
@@ -18,20 +20,28 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
+    fun provideGson(): Gson {
+        return GsonBuilder().create()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(gson: Gson): Retrofit {
         return Retrofit
             .Builder()
             .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 
     @Provides
+    @Singleton
     fun provideTodoApiService(retrofit: Retrofit): TodoApiService {
         return retrofit.create(TodoApiService::class.java)
     }
 
     @Provides
+    @Singleton
     fun provideRepository(apiService: TodoApiService, preferences: Preferences): Repository {
         return RepositoryImpl(apiService, preferences)
     }

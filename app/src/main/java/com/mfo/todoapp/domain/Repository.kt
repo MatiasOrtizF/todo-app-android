@@ -11,5 +11,5 @@ interface Repository {
     suspend fun authenticationUser(loginRequest: LoginRequest): LoginModel?
     suspend fun putTokenValue(token: String)
     suspend fun getTokenValue(token: String): String?
-    suspend fun getAll(authorizaiton: String): List<Todo>?
+    suspend fun getAll(authorization: String): List<Todo>?
 }
