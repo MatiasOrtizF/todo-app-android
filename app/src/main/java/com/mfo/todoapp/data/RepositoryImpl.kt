@@ -12,6 +12,7 @@ import com.mfo.todoapp.domain.model.LoginModel
 import com.mfo.todoapp.domain.model.LoginRequest
 import com.mfo.todoapp.domain.model.Todo
 import retrofit2.Call
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import javax.inject.Inject
 
@@ -30,7 +31,19 @@ class RepositoryImpl @Inject constructor(private val apiService: TodoApiService,
     override suspend fun authenticationUser(loginRequest: LoginRequest): LoginModel? {
         runCatching { apiService.authenticationUser(loginRequest) }
             .onSuccess { return it.toDomain() }
-            .onFailure { Log.i("mfo", "Error ocurred ${it.message}") }
+            .onFailure { throwable ->
+                val errorMessage = when (throwable) {
+                    is HttpException -> {
+                        when (throwable.code()) {
+                            401 -> "Invalid email or password"
+                            else -> "An error occurred: ${throwable.message}"
+                        }
+                    }
+                    else -> "An error occurred: ${throwable.message}"
+                }
+                Log.i("mfo", "Error occurred: $errorMessage")
+                throw Exception(errorMessage)
+            }
         return null
     }
 

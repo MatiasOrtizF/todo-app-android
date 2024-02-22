@@ -21,11 +21,16 @@ class MainViewModel @Inject constructor(private val getLoginUseCase: GetLoginUse
     fun authenticationUser(loginRequest: LoginRequest) {
         viewModelScope.launch {
             _state.value = MainState.Loading
-            val result = withContext(Dispatchers.IO) { getLoginUseCase(loginRequest) }
-            if(result != null) {
-                _state.value = MainState.Success(result.token)
-            } else {
-                _state.value = MainState.Error("ocurrio un error, por favor intente mas tarde")
+            try {
+                val result = withContext(Dispatchers.IO) { getLoginUseCase(loginRequest) }
+                if(result != null) {
+                    _state.value = MainState.Success(result.token)
+                } else {
+                    _state.value = MainState.Error("ocurrio un error, por favor intente mas tarde")
+                }
+            } catch (e: Exception) {
+                val errorMessage: String = e.message.toString()
+                _state.value = MainState.Error(errorMessage)
             }
         }
     }

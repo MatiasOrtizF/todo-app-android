@@ -1,8 +1,10 @@
 package com.mfo.todoapp.ui.login
 
+import android.app.Application
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
@@ -51,7 +53,7 @@ class MainActivity: AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.state.collect{
                     when(it) {
-                        is MainState.Error -> errorState()
+                        is MainState.Error -> errorState(it.error)
                         MainState.Loading -> loadingState()
                         is MainState.Success -> successSate(it)
                     }
@@ -64,8 +66,10 @@ class MainActivity: AppCompatActivity() {
         binding.pb.isVisible = true
     }
 
-    private fun errorState() {
+    private fun errorState(error: String) {
         binding.pb.isVisible = false
+        val context = binding.root.context
+        Toast.makeText(context, "Error: $error", Toast.LENGTH_SHORT).show()
     }
 
     private fun successSate(state: MainState.Success) {

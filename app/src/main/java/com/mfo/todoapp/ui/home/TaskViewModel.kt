@@ -26,9 +26,7 @@ class TaskViewModel @Inject constructor(private val getAllTodoUseCase: GetAllTod
     fun getAll(authorization: String) {
         viewModelScope.launch {
             _state.value = TaskState.Loading
-            println("token es: $authorization")
             val result = withContext(Dispatchers.IO) { getAllTodoUseCase(authorization) }
-            println("este es el resultado: $result")
             if(result != null) {
                 _todos.value = result
                 _state.value = TaskState.Success(result)
