@@ -22,7 +22,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:background="?android:attr/selectableItemBackground"
-                android:contentDescription="Check button"
+                android:contentDescription="@string/img_description_check"
                 android:scaleType="centerInside"
                 android:src="@drawable/circle"/>
 
