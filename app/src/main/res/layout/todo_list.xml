@@ -41,18 +41,22 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true">
                 <ImageButton
+                    android:id="@+id/sharedBtn"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
+                    android:contentDescription="@string/img_description_shared"
                     android:background="@android:color/transparent"
                     android:scaleType="centerInside"
                     android:src="@drawable/add_user" />
 
                 <ImageButton
+                    android:id="@+id/deleteBtn"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="15dp"
+                    android:contentDescription="@string/img_description_delete"
                     android:background="@android:color/transparent"
                     android:src="@drawable/cross" />
             </LinearLayout>

@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_tasks"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/img_description_bg"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,9 +35,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:letterSpacing="1"
-                android:text="TODO"
+                android:text="@string/app_name"
+                android:textAllCaps="true"
                 android:textColor="#ffff"
-                android:textSize="35dp"
+                android:textSize="35sp"
                 android:textStyle="bold" />
 
             <Button
@@ -44,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Log Out" />
+                android:text="@string/btn_log_out" />
 
         </LinearLayout>
 
@@ -53,10 +55,11 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTask"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:hint="Create a new todo..." />
+                android:hint="@string/hint_create_todo" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.cardview.widget.CardView
@@ -83,17 +86,17 @@
                     android:layout_marginTop="30dp">
 
                     <TextView
+                        android:id="@+id/itemsLeftText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="1 items left" />
+                        android:layout_weight="1"/>
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:text="Clear completed" />
+                        android:text="@string/btn_clear_completed" />
 
                 </LinearLayout>
 
@@ -110,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:background="@android:color/transparent"
-                android:text="All"
+                android:text="@string/btn_all"
                 android:textColor="@color/black" />
 
             <Button
@@ -118,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
-                android:text="Actived"
+                android:text="@string/btn_actived"
                 android:textColor="@color/black" />
 
             <Button
@@ -126,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:background="@android:color/transparent"
-                android:text="Completed"
+                android:text="@string/btn_completed"
                 android:textColor="@color/black" />
 
         </androidx.cardview.widget.CardView>

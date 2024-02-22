@@ -10,4 +10,19 @@
     <string name="txt_password">Password</string>
     <string name="btn_login">LOGIN</string>
 
+    <!-- TASK -->
+    <string name="img_description_bg">Back ground</string>
+    <string name="btn_log_out">Log Out</string>
+    <string name="hint_create_todo">Create a new todo...</string>
+    <string name="btn_clear_completed">Clear completed</string>
+    <!-- filters -->
+    <string name="btn_all">All</string>
+    <string name="btn_actived">Actived</string>
+    <string name="btn_completed">Completed</string>
+
+    <!-- TODO LIST -->
+    <string name="img_description_check">Check button</string>
+    <string name="img_description_shared">Shared button</string>
+    <string name="img_description_delete">Delete button</string>
+
 </resources>

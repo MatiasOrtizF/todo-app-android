@@ -65,7 +65,6 @@ class TaskActivity: AppCompatActivity() {
 
     private fun loadingState() {
         binding.pb.isVisible = true
-        println("loading state")
     }
 
     private fun errorState(error: String) {
@@ -78,5 +77,7 @@ class TaskActivity: AppCompatActivity() {
         binding.pb.isVisible = false
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = TaskAdapter(state.todos)
+        val itemsLeftText = taskAdapter.itemCount.toString() + "items left"
+        binding.itemsLeftText.text = itemsLeftText
     }
 }
