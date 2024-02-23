@@ -1,5 +1,6 @@
 package com.mfo.todoapp.ui.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mfo.todoapp.R
 import com.mfo.todoapp.databinding.ActivityTaskBinding
 import com.mfo.todoapp.domain.model.Todo
 import com.mfo.todoapp.ui.home.adapter.TaskAdapter
@@ -74,12 +76,18 @@ class TaskActivity: AppCompatActivity(){
         println("este es el error: $error")
     }
 
+    @SuppressLint("StringFormatInvalid")
     private fun successSate(state: TaskState.Success) {
         println("salio todo bien")
         binding.pb.isVisible = false
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = TaskAdapter(state.todos)
-        val itemsLeftText = taskAdapter.itemCount.toString() + "items left"
+        addNumberInItemsLeft(state.todos.size);
+    }
+
+    private fun addNumberInItemsLeft(todosSize: Int) {
+        val itemCount: String = todosSize.toString()
+        val itemsLeftText = getString(R.string.txt_items_left, itemCount)
         binding.itemsLeftText.text = itemsLeftText
     }
 }

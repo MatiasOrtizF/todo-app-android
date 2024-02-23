@@ -89,6 +89,7 @@
                         android:id="@+id/itemsLeftText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:text="@string/txt_items_left"
                         android:layout_weight="1"/>
 
                     <TextView
