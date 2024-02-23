@@ -50,17 +50,16 @@
 
         </LinearLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+            android:id="@+id/etTask"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etTask"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:hint="@string/hint_create_todo" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:background="@drawable/bg_text_input_create_todo"
+            android:hint="@string/hint_create_todo"
+            android:textSize="15sp"
+            android:padding="15dp"
+            android:layout_marginVertical="10dp"/>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -115,6 +114,7 @@
                 android:layout_gravity="start"
                 android:background="@android:color/transparent"
                 android:text="@string/btn_all"
+                android:textStyle="bold"
                 android:textColor="@color/black" />
 
             <Button
@@ -123,6 +123,7 @@
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
                 android:text="@string/btn_actived"
+                android:textStyle="bold"
                 android:textColor="@color/black" />
 
             <Button
@@ -131,6 +132,7 @@
                 android:layout_gravity="end"
                 android:background="@android:color/transparent"
                 android:text="@string/btn_completed"
+                android:textStyle="bold"
                 android:textColor="@color/black" />
 
         </androidx.cardview.widget.CardView>
