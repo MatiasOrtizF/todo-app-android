@@ -59,7 +59,8 @@
             android:hint="@string/hint_create_todo"
             android:textSize="15sp"
             android:padding="15dp"
-            android:layout_marginVertical="10dp"/>
+            android:layout_marginVertical="10dp"
+            android:singleLine="true"/>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,7 +13,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mfo.todoapp.R
 import com.mfo.todoapp.databinding.ActivityTaskBinding
-import com.mfo.todoapp.domain.model.Todo
 import com.mfo.todoapp.ui.home.adapter.TaskAdapter
 import com.mfo.todoapp.ui.login.MainActivity
 import com.mfo.todoapp.utils.UserData
@@ -25,7 +24,7 @@ class TaskActivity: AppCompatActivity(){
 
     private lateinit var binding: ActivityTaskBinding
     private val taskViewModel: TaskViewModel by viewModels()
-    private val taskAdapter = TaskAdapter(emptyList())
+    private val taskAdapter = TaskAdapter(mutableListOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +36,20 @@ class TaskActivity: AppCompatActivity(){
     private fun initUI() {
         initUIState()
         val token = UserData.token
-        println("este es el token: $token")
         taskViewModel.getAll(token)
         binding.btnLogOut.setOnClickListener() {
             UserData.token = ""
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+        }
+        binding.etTask.setOnEditorActionListener { _, actionId, _ ->
+            if(actionId == EditorInfo.IME_ACTION_DONE) {
+                if(binding.etTask.text.toString().isNotEmpty()) {
+                    val task: String = binding.etTask.text.toString()
+                    taskViewModel.addTodo(token, task)
+                }
+            }
+            true
         }
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@TaskActivity)
@@ -80,9 +87,13 @@ class TaskActivity: AppCompatActivity(){
     private fun successSate(state: TaskState.Success) {
         println("salio todo bien")
         binding.pb.isVisible = false
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = TaskAdapter(state.todos)
+        println(state.todos)
+        taskAdapter.updateData(state.todos)
+        /*binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = TaskAdapter(state.todos)*/
+        binding.recyclerView.adapter = taskAdapter
         addNumberInItemsLeft(state.todos.size);
+        println(state.todos)
     }
 
     private fun addNumberInItemsLeft(todosSize: Int) {

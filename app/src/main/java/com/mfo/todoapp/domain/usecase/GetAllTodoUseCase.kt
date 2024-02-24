@@ -1,5 +1,6 @@
 package com.mfo.todoapp.domain.usecase
 
+import com.mfo.todoapp.data.network.response.TodoResponse
 import com.mfo.todoapp.domain.Repository
 import com.mfo.todoapp.domain.model.LoginRequest
 import com.mfo.todoapp.domain.model.Todo

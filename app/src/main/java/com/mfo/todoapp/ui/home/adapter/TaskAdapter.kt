@@ -1,6 +1,5 @@
 package com.mfo.todoapp.ui.home.adapter
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mfo.todoapp.R
 import com.mfo.todoapp.domain.model.Todo
 
-class TaskAdapter(val todos:List<Todo>): RecyclerView.Adapter<TaskViewHolder>() {
+class TaskAdapter(private var todos: MutableList<Todo>): RecyclerView.Adapter<TaskViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val layoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
@@ -33,5 +32,12 @@ class TaskAdapter(val todos:List<Todo>): RecyclerView.Adapter<TaskViewHolder>() 
             dialog.setContentView(view)
             dialog.show()
         }
+    }
+
+    fun updateData(newTodos: List<Todo>) {
+        val startPosition = todos.size
+        todos.clear()
+        todos.addAll(newTodos)
+        notifyItemInserted(startPosition)
     }
 }
