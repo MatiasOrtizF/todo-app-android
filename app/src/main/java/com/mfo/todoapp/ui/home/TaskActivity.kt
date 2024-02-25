@@ -30,36 +30,39 @@ class TaskActivity: AppCompatActivity(){
         super.onCreate(savedInstanceState)
         binding = ActivityTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initComponent()
+        initUIState()
         initUI()
     }
 
-    private fun initUI() {
-        initUIState()
-        val token = UserData.token
-        taskViewModel.getAll(token)
+    private fun initComponent() {
+        val token: String = UserData.token
+        initListeners(token)
+    }
+
+    private fun initListeners(token: String) {
         binding.btnLogOut.setOnClickListener() {
             UserData.token = ""
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
         binding.etTask.setOnEditorActionListener { _, actionId, _ ->
-            if(actionId == EditorInfo.IME_ACTION_DONE) {
-                if(binding.etTask.text.toString().isNotEmpty()) {
+            if(binding.etTask.text.toString().isNotEmpty()) {
+                if(actionId == EditorInfo.IME_ACTION_DONE) {
                     val task: String = binding.etTask.text.toString()
                     taskViewModel.addTodo(token, task)
                 }
             }
             true
         }
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@TaskActivity)
-            adapter = taskAdapter
-        }
     }
 
     private fun initUIState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                val token: String = UserData.token
+                taskViewModel.getAll(token)
+
                 taskViewModel.state.collect{
                     println("llega aca")
                     when(it) {
@@ -71,6 +74,13 @@ class TaskActivity: AppCompatActivity(){
                     }
                 }
             }
+        }
+    }
+
+    private fun initUI() {
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@TaskActivity)
+            adapter = taskAdapter
         }
     }
 
