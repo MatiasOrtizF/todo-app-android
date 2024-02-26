@@ -18,14 +18,9 @@ class RepositoryImpl @Inject constructor(private val apiService: TodoApiService,
             .onSuccess { return it.toDomain() }
             .onFailure { throwable ->
                 val errorMessage = when (throwable) {
-                    is HttpException -> {
-                        when (throwable.code()) {
-                            401 -> "Invalid email or password"
-                            else -> "An error occurred: ${throwable.message}"
-                        }
-                    }
-                    else -> "An error occurred: ${throwable.message}"
-                }
+                    is HttpException -> throwable.response()?.errorBody()?.string()
+                    else -> null
+                } ?: "An error ocurred: ${throwable.message}"
                 Log.i("mfo", "Error occurred: $errorMessage")
                 throw Exception(errorMessage)
             }
@@ -38,15 +33,47 @@ class RepositoryImpl @Inject constructor(private val apiService: TodoApiService,
             todos.map { it.toDomain() }
         }
             .onSuccess { todos -> return todos }
-            .onFailure { Log.i("mfo", "Error ocurred ${it.message}") }
+            .onFailure { throwable ->
+                val errorMessage = when (throwable) {
+                    is HttpException -> throwable.response()?.errorBody()?.string()
+                    else -> null
+                } ?: "An error ocurred: ${throwable.message}"
+                Log.i("mfo", "Error occurred: $errorMessage")
+                throw Exception(errorMessage)
+            }
         return null
     }
 
     override suspend fun addTodo(authorization: String, task: String): Todo? {
         runCatching { apiService.addTodo(authorization, task) }
             .onSuccess { it.toDomain() }
-            .onFailure { Log.i("mfo", "Error ocurred ${it.message}") }
+            .onFailure { throwable ->
+                val errorMessage = when (throwable) {
+                    is HttpException -> throwable.response()?.errorBody()?.string()
+                    else -> null
+                } ?: "An error ocurred: ${throwable.message}"
+                Log.i("mfo", "Error occurred: $errorMessage")
+                throw Exception(errorMessage)
+            }
         return null
+    }
+
+    override suspend fun deleteTodo(authorization: String, todoId: Long): Boolean {
+        return runCatching {
+            apiService.deleteTodo(authorization, todoId)
+        }.fold(
+            onSuccess = {
+                true
+            },
+            onFailure = { throwable ->
+                val errorMessage = when (throwable) {
+                    is HttpException -> throwable.response()?.errorBody()?.string()
+                    else -> null
+                } ?: "An error ocurred: ${throwable.message}"
+                Log.i("mfo", "Error occurred: $errorMessage")
+                throw Exception(errorMessage)
+            }
+        )
     }
 
     override suspend fun putTokenValue(token: String) {

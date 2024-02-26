@@ -5,9 +5,11 @@ import com.mfo.todoapp.data.network.response.LoginResponse
 import com.mfo.todoapp.data.network.response.TodoResponse
 import com.mfo.todoapp.domain.model.Todo
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TodoApiService {
@@ -23,4 +25,10 @@ interface TodoApiService {
         @Header ("Authorization") authorization: String,
         @Query ("task") task: String
     ): TodoResponse
+
+    @DELETE("todo/{id}")
+    suspend fun deleteTodo(
+        @Header ("Authorization") authorization: String,
+        @Path ("id") todoId: Long
+    ): Boolean
 }

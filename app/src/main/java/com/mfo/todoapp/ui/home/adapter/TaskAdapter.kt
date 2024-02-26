@@ -1,15 +1,17 @@
 package com.mfo.todoapp.ui.home.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mfo.todoapp.R
 import com.mfo.todoapp.domain.model.Todo
+import com.mfo.todoapp.utils.UserData
 
-class TaskAdapter(private var todos: MutableList<Todo>): RecyclerView.Adapter<TaskViewHolder>() {
+class TaskAdapter(private var todos: MutableList<Todo>, private val itemClickListener: TaskItemClickListener): RecyclerView.Adapter<TaskViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val layoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
@@ -26,10 +28,27 @@ class TaskAdapter(private var todos: MutableList<Todo>): RecyclerView.Adapter<Ta
         val context = holder.itemView.context
 
        // Configuración del listener de clics en el botón compartido
-        holder.itemView.findViewById<View>(R.id.sharedBtn).setOnClickListener {
+        holder.itemView.findViewById<View>(R.id.btnShared).setOnClickListener {
             val dialog = BottomSheetDialog(context)
             val view = LayoutInflater.from(context).inflate(R.layout.modal, null)
             dialog.setContentView(view)
+            dialog.show()
+        }
+
+        holder.itemView.findViewById<View>(R.id.btnDelete).setOnClickListener{
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("Delete todo")
+            builder.setMessage("Are you sure you want to deleted this todo?")
+
+            builder.setPositiveButton("Yes") { dialog, which ->
+                val token = UserData.token
+                val todoId = todos[position].id
+                itemClickListener.onDeleteTodoClicked(token, todoId)
+            }
+
+            builder.setNegativeButton("Cancel", null)
+
+            val dialog = builder.create()
             dialog.show()
         }
     }
