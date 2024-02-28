@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class Todo (
     val id: Long,
     val task: String,
-    val completed: Boolean,
+    var completed: Boolean,
     val user: User) {
 
     fun toDomain(): Todo {

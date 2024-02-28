@@ -55,7 +55,6 @@ class TaskActivity: AppCompatActivity(), TaskItemClickListener{
                     val task: String = binding.etTask.text.toString()
                     taskViewModel.addTodo(token, task)
                 }
-
             }
             true
         }
@@ -126,7 +125,7 @@ class TaskActivity: AppCompatActivity(), TaskItemClickListener{
         taskViewModel.deleteTodo(authorization, todoId)
     }
 
-    /*private fun onDeleteTodoClicked(todoId: Long, ) {
-        taskViewModel.deleteTodo(todoId,)
-    }*/
+    override fun onCompleteTodoClicked(authorization: String, todoId: Long) {
+        taskViewModel.completeTodo(authorization, todoId)
+    }
 }

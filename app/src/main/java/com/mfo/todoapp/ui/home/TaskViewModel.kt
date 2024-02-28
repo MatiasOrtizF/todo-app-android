@@ -3,6 +3,7 @@ package com.mfo.todoapp.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mfo.todoapp.domain.model.Todo
+import com.mfo.todoapp.domain.usecase.CompleteTodoUseCase
 import com.mfo.todoapp.domain.usecase.DeleteTodoUseCase
 import com.mfo.todoapp.domain.usecase.GetAllTodoUseCase
 import com.mfo.todoapp.domain.usecase.PostTodoUseCase
@@ -16,7 +17,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class TaskViewModel @Inject constructor(private val getAllTodoUseCase: GetAllTodoUseCase, private val postTodoUseCase: PostTodoUseCase, private val deleteTodoUseCase: DeleteTodoUseCase): ViewModel() {
+class TaskViewModel @Inject constructor(private val getAllTodoUseCase: GetAllTodoUseCase, private val postTodoUseCase: PostTodoUseCase, private val deleteTodoUseCase: DeleteTodoUseCase, private val completeTodoUseCase: CompleteTodoUseCase): ViewModel() {
 
     private var _state = MutableStateFlow<TaskState>(TaskState.Loading)
     val state: StateFlow<TaskState> = _state
@@ -58,6 +59,17 @@ class TaskViewModel @Inject constructor(private val getAllTodoUseCase: GetAllTod
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) { deleteTodoUseCase(authorization, todoId) }
+            } catch (e: Exception) {
+                val errorMessage: String = e.message.toString()
+                _state.value = TaskState.Error(errorMessage)
+            }
+        }
+    }
+
+    fun completeTodo(authorization: String, todoId: Long) {
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) { completeTodoUseCase(authorization, todoId) }
             } catch (e: Exception) {
                 val errorMessage: String = e.message.toString()
                 _state.value = TaskState.Error(errorMessage)

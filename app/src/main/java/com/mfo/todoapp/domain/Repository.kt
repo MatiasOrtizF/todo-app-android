@@ -15,4 +15,5 @@ interface Repository {
     suspend fun getAll(authorization: String): List<Todo>?
     suspend fun addTodo(authorization: String, task: String): Todo?
     suspend fun deleteTodo(authorization: String, todoId: Long): Boolean
+    suspend fun completeTodo(authorization: String, todoId: Long): Todo?
 }

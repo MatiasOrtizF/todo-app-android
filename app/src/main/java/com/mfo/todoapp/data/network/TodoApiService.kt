@@ -9,6 +9,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -31,4 +32,10 @@ interface TodoApiService {
         @Header ("Authorization") authorization: String,
         @Path ("id") todoId: Long
     ): Boolean
+
+    @PUT("todo/{id}")
+    suspend fun completeTodo(
+        @Header ("Authorization") authorization: String,
+        @Path ("id") todoId: Long
+    ): TodoResponse
 }

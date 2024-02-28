@@ -1,5 +1,6 @@
 package com.mfo.todoapp.ui.home.adapter
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,7 @@ class TaskAdapter(private var todos: MutableList<Todo>, private val itemClickLis
         val context = holder.itemView.context
 
        // Configuración del listener de clics en el botón compartido
-        holder.itemView.findViewById<View>(R.id.btnShared).setOnClickListener {
+        holder.itemView.findViewById<View>(R.id.btnShared).setOnClickListener{
             val dialog = BottomSheetDialog(context)
             val view = LayoutInflater.from(context).inflate(R.layout.modal, null)
             dialog.setContentView(view)
@@ -44,12 +45,22 @@ class TaskAdapter(private var todos: MutableList<Todo>, private val itemClickLis
                 val token = UserData.token
                 val todoId = todos[position].id
                 itemClickListener.onDeleteTodoClicked(token, todoId)
+
+                updateDeleteData(position)
             }
 
             builder.setNegativeButton("Cancel", null)
 
             val dialog = builder.create()
             dialog.show()
+        }
+
+        holder.itemView.findViewById<View>(R.id.btnCheck).setOnClickListener{
+            val token = UserData.token
+            val todoId = todos[position].id
+            itemClickListener.onCompleteTodoClicked(token, todoId)
+
+            updateCompleteData(position)
         }
     }
 
@@ -58,5 +69,15 @@ class TaskAdapter(private var todos: MutableList<Todo>, private val itemClickLis
         todos.clear()
         todos.addAll(newTodos)
         notifyItemInserted(startPosition)
+    }
+
+    private fun updateDeleteData(position: Int) {
+        todos.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    private fun updateCompleteData(position: Int) {
+        todos[position].completed = !todos[position].completed
+        notifyItemChanged(position)
     }
 }
