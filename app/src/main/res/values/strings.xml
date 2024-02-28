@@ -13,7 +13,7 @@
     <!-- TASK -->
     <string name="img_description_bg">Back ground</string>
     <string name="btn_log_out">Log Out</string>
-    <string name="hint_create_todo">Create a new todo...</string>
+    <string name="hint_create_todo">Create a new todo…</string>
     <string name="txt_items_left">%1$s items left</string>
     <string name="btn_clear_completed">Clear completed</string>
     <!-- filters -->
@@ -27,7 +27,7 @@
     <string name="img_description_delete">Delete button</string>
 
     <!-- MODAL -->
-    <string name="txt_hello_share_todo">Hello share your todo</string>
+    <string name="txt_hello_share_todo">Hello %1$s share your todo</string>
     <string name="txt_enter_email">Enter the email of the user you want to share your todo with. Share a todo with someone and stay in sync with your goals everyday.</string>
     <string name="hint_enter_email">Enter your contact email</string>
     <string name="btn_share">Share</string>
