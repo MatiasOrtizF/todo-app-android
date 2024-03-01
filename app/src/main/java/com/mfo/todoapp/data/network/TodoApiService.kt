@@ -38,4 +38,7 @@ interface TodoApiService {
         @Header ("Authorization") authorization: String,
         @Path ("id") todoId: Long
     ): TodoResponse
+
+    @DELETE("todo/completed")
+    suspend fun deleteCompletedTodos(@Header ("Authorization") authorization: String): Boolean
 }

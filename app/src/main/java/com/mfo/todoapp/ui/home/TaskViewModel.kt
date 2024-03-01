@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mfo.todoapp.domain.model.Todo
 import com.mfo.todoapp.domain.usecase.CompleteTodoUseCase
+import com.mfo.todoapp.domain.usecase.DeleteCompletedTodosUseCase
 import com.mfo.todoapp.domain.usecase.DeleteTodoUseCase
 import com.mfo.todoapp.domain.usecase.GetAllTodoUseCase
 import com.mfo.todoapp.domain.usecase.PostTodoUseCase
@@ -17,7 +18,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class TaskViewModel @Inject constructor(private val getAllTodoUseCase: GetAllTodoUseCase, private val postTodoUseCase: PostTodoUseCase, private val deleteTodoUseCase: DeleteTodoUseCase, private val completeTodoUseCase: CompleteTodoUseCase): ViewModel() {
+class TaskViewModel @Inject constructor(private val getAllTodoUseCase: GetAllTodoUseCase, private val postTodoUseCase: PostTodoUseCase, private val deleteTodoUseCase: DeleteTodoUseCase, private val completeTodoUseCase: CompleteTodoUseCase, private val deleteCompletedTodosUseCase: DeleteCompletedTodosUseCase): ViewModel() {
 
     private var _state = MutableStateFlow<TaskState>(TaskState.Loading)
     val state: StateFlow<TaskState> = _state
@@ -70,6 +71,20 @@ class TaskViewModel @Inject constructor(private val getAllTodoUseCase: GetAllTod
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) { completeTodoUseCase(authorization, todoId) }
+            } catch (e: Exception) {
+                val errorMessage: String = e.message.toString()
+                _state.value = TaskState.Error(errorMessage)
+            }
+        }
+    }
+
+    fun deleteCompletedTodos(authorization: String) {
+        viewModelScope.launch {
+            try {
+                val result = withContext(Dispatchers.IO) { deleteCompletedTodosUseCase(authorization) }
+                if(result) {
+                    getAll(authorization)
+                }
             } catch (e: Exception) {
                 val errorMessage: String = e.message.toString()
                 _state.value = TaskState.Error(errorMessage)

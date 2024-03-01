@@ -90,6 +90,24 @@ class RepositoryImpl @Inject constructor(private val apiService: TodoApiService,
         return null
     }
 
+    override suspend fun deleteCompletedTodos(authorization: String): Boolean {
+        return runCatching {
+            apiService.deleteCompletedTodos(authorization)
+        }.fold(
+            onSuccess = {
+                true
+            },
+            onFailure = { throwable ->
+                val errorMessage = when (throwable) {
+                    is HttpException -> throwable.response()?.errorBody()?.string()
+                    else -> null
+                } ?: "An error ocurred: ${throwable.message}"
+                Log.i("mfo", "Error occurred: $errorMessage")
+                throw Exception(errorMessage)
+            }
+        )
+    }
+
     override suspend fun putTokenValue(token: String) {
         preferences.putTokenValue(token)
     }

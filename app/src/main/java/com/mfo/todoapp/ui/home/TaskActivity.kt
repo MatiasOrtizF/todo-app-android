@@ -58,6 +58,9 @@ class TaskActivity: AppCompatActivity(), TaskItemClickListener{
             }
             true
         }
+        binding.btnClearCompleted.setOnClickListener {
+            taskViewModel.deleteCompletedTodos(token)
+        }
     }
 
     private fun initUIState() {
@@ -127,5 +130,9 @@ class TaskActivity: AppCompatActivity(), TaskItemClickListener{
 
     override fun onCompleteTodoClicked(authorization: String, todoId: Long) {
         taskViewModel.completeTodo(authorization, todoId)
+    }
+
+    override fun onDeleteCompletedTodos(authorization: String) {
+        taskViewModel.deleteCompletedTodos(authorization)
     }
 }
