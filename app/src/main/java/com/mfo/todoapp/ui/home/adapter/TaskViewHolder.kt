@@ -1,18 +1,21 @@
 package com.mfo.todoapp.ui.home.adapter
 
 import android.graphics.Paint
+import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mfo.todoapp.R
+import com.mfo.todoapp.databinding.ModalBinding
 import com.mfo.todoapp.databinding.TodoListBinding
 import com.mfo.todoapp.domain.model.Todo
 import com.mfo.todoapp.utils.UserData
 
 class TaskViewHolder(view: View, private val listener: TaskItemClickListener, private val adapterListener: TaskAdapterListener): RecyclerView.ViewHolder(view) {
     private val binding = TodoListBinding.bind(view)
+    //private val bindingModal = ModalBinding.bind(view)
 
 
     fun bind(todo: Todo) {
@@ -28,10 +31,18 @@ class TaskViewHolder(view: View, private val listener: TaskItemClickListener, pr
             binding.btnCheck.setImageResource(R.drawable.circle)
         }
         binding.btnShared.setOnClickListener {
-            val context = binding.btnShared.context
+            val context = it.context
             val dialog = BottomSheetDialog(context)
             val view = LayoutInflater.from(context).inflate(R.layout.modal, null)
             dialog.setContentView(view)
+
+            val bindingModal = ModalBinding.bind(view)
+
+            val titleText = "Hello ${todo.user.name + " " + todo.user.lastName} share your todo"
+            bindingModal.tvTitle.text = titleText
+
+            bindingModal.tvTaskTodo.text = todo.task
+
             dialog.show()
         }
         binding.btnDelete.setOnClickListener {
