@@ -11,8 +11,11 @@ import com.mfo.todoapp.domain.usecase.PostTodoUseCase
 import com.mfo.todoapp.ui.login.MainState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -90,5 +93,17 @@ class TaskViewModel @Inject constructor(private val getAllTodoUseCase: GetAllTod
                 _state.value = TaskState.Error(errorMessage)
             }
         }
+    }
+
+    fun getTodosByStatus(completed: Boolean): List<Todo> {
+        return if (completed) {
+            todos.value.filter { it.completed }
+        } else {
+            todos.value.filter { !it.completed }
+        }
+    }
+
+    fun getAllTodos(): List<Todo> {
+        return todos.value
     }
 }

@@ -29,6 +29,12 @@ class TaskAdapter(private var todos: MutableList<Todo>, private val listener: Ta
         notifyItemInserted(startPosition)
     }
 
+    fun updateTodos(newData: List<Todo>){
+        todos.clear()
+        todos.addAll(newData)
+        notifyDataSetChanged()
+    }
+
     override fun onAddItem(todo: Todo) {
         todos.add(index = todos.size, todo)
         notifyItemInserted(todos.size-1)

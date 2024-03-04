@@ -59,6 +59,7 @@
             android:hint="@string/hint_create_todo"
             android:padding="15dp"
             android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -117,6 +118,7 @@
             android:layout_marginTop="15dp">
 
             <Button
+                android:id="@+id/btnAllFilter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -126,6 +128,7 @@
                 android:textStyle="bold" />
 
             <Button
+                android:id="@+id/btnActivedFilter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -135,6 +138,7 @@
                 android:textStyle="bold" />
 
             <Button
+                android:id="@+id/btnCompletedFilter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

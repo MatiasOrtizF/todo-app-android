@@ -61,6 +61,18 @@ class TaskActivity: AppCompatActivity(), TaskItemClickListener{
         binding.btnClearCompleted.setOnClickListener {
             taskViewModel.deleteCompletedTodos(token)
         }
+        binding.btnAllFilter.setOnClickListener {
+            val filteredTodos = taskViewModel.getAllTodos()
+            taskAdapter.updateTodos(filteredTodos)
+        }
+        binding.btnActivedFilter.setOnClickListener {
+            val filteredTodos = taskViewModel.getTodosByStatus(completed = false)
+            taskAdapter.updateTodos(filteredTodos)
+        }
+        binding.btnCompletedFilter.setOnClickListener {
+            val filteredTodos = taskViewModel.getTodosByStatus(completed = true)
+            taskAdapter.updateTodos(filteredTodos)
+        }
     }
 
     private fun initUIState() {
