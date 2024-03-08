@@ -14,6 +14,7 @@
     <string name="img_description_bg">Back ground</string>
     <string name="btn_log_out">Log Out</string>
     <string name="hint_create_todo">Create a new todo…</string>
+    <string name="txt_list_empty">Your list is empty</string>
     <string name="txt_items_left">%1$s items left</string>
     <string name="btn_clear_completed">Clear completed</string>
     <!-- filters -->

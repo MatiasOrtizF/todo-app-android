@@ -74,6 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="15dp"
+                    app:layout_constraintHeight_min="100dp"
                     app:layout_constraintHeight_max="200dp"
                     tools:ignore="MissingConstraints">
 
@@ -87,6 +88,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/emptyText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/txt_list_empty"
+                        android:visibility="gone" />
                 </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

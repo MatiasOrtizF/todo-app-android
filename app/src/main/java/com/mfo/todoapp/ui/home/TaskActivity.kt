@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -87,7 +88,12 @@ class TaskActivity: AppCompatActivity(), TaskItemClickListener{
                             errorState(it.error)
                         }
                         TaskState.Loading -> loadingState()
-                        is TaskState.Success -> successSate(it)
+                        is TaskState.Success -> {
+                            successSate(it)
+                            if (it.todos.isEmpty()) {
+                                binding.emptyText.visibility = View.VISIBLE
+                            }
+                        }
                     }
                 }
             }

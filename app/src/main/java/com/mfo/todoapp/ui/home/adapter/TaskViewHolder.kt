@@ -43,6 +43,13 @@ class TaskViewHolder(view: View, private val listener: TaskItemClickListener, pr
 
             bindingModal.tvTaskTodo.text = todo.task
 
+            bindingModal.btnShare.setOnClickListener {
+                val userEmail: String = bindingModal.etEmailShared.text.toString()
+                if(userEmail.isNotEmpty()) {
+                    println(userEmail)
+                }
+            }
+
             dialog.show()
         }
         binding.btnDelete.setOnClickListener {
