@@ -1,4 +1,4 @@
-package com.mfo.todoapp.ui.home
+package com.mfo.todoapp.ui.home.task
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -16,15 +16,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mfo.todoapp.R
 import com.mfo.todoapp.databinding.ActivityTaskBinding
 import com.mfo.todoapp.databinding.TodoListBinding
-import com.mfo.todoapp.ui.home.adapter.TaskAdapter
-import com.mfo.todoapp.ui.home.adapter.TaskItemClickListener
+import com.mfo.todoapp.ui.home.task.adapter.TaskAdapter
+import com.mfo.todoapp.ui.home.task.adapter.TaskItemClickListener
 import com.mfo.todoapp.ui.login.MainActivity
 import com.mfo.todoapp.utils.UserData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TaskActivity: AppCompatActivity(), TaskItemClickListener{
+class TaskActivity: AppCompatActivity(), TaskItemClickListener {
 
     private lateinit var binding: ActivityTaskBinding
     private lateinit var todoListBinding: TodoListBinding
@@ -152,5 +152,9 @@ class TaskActivity: AppCompatActivity(), TaskItemClickListener{
 
     override fun onDeleteCompletedTodos(authorization: String) {
         taskViewModel.deleteCompletedTodos(authorization)
+    }
+
+    override fun getAllUsersInTodoShared(authorization: String, todoId: Long) {
+        taskViewModel.getUsersInTodoShared(authorization, todoId)
     }
 }

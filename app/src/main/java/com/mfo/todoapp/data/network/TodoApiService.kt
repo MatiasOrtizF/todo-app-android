@@ -4,6 +4,7 @@ import com.mfo.todoapp.domain.model.LoginRequest
 import com.mfo.todoapp.data.network.response.LoginResponse
 import com.mfo.todoapp.data.network.response.TodoResponse
 import com.mfo.todoapp.domain.model.Todo
+import com.mfo.todoapp.domain.model.User
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -41,4 +42,10 @@ interface TodoApiService {
 
     @DELETE("todo/completed")
     suspend fun deleteCompletedTodos(@Header ("Authorization") authorization: String): Boolean
+
+    @GET("todo_shared/{id}")
+    suspend fun getUsersInTodoShared(
+        @Header ("Authorization") authorization: String,
+        @Path ("id") todoId: Long
+    ): List<User>
 }

@@ -1,16 +1,16 @@
-package com.mfo.todoapp.ui.home.adapter
+package com.mfo.todoapp.ui.home.task.adapter
 
 import android.graphics.Paint
-import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mfo.todoapp.R
 import com.mfo.todoapp.databinding.ModalBinding
 import com.mfo.todoapp.databinding.TodoListBinding
 import com.mfo.todoapp.domain.model.Todo
+import com.mfo.todoapp.ui.home.modal.ModalDialogFragment
 import com.mfo.todoapp.utils.UserData
 
 class TaskViewHolder(view: View, private val listener: TaskItemClickListener, private val adapterListener: TaskAdapterListener): RecyclerView.ViewHolder(view) {
@@ -32,9 +32,10 @@ class TaskViewHolder(view: View, private val listener: TaskItemClickListener, pr
         }
         binding.btnShared.setOnClickListener {
             val context = it.context
-            val dialog = BottomSheetDialog(context)
+            //val dialog = BottomSheetDialog(context)
             val view = LayoutInflater.from(context).inflate(R.layout.modal, null)
-            dialog.setContentView(view)
+            //dialog.setContentView(view)
+            val dialog = ModalDialogFragment.newInstance(todo.id)
 
             val bindingModal = ModalBinding.bind(view)
 
@@ -43,6 +44,9 @@ class TaskViewHolder(view: View, private val listener: TaskItemClickListener, pr
 
             bindingModal.tvTaskTodo.text = todo.task
 
+
+            //listener.getAllUsersInTodoShared(token, todo.id)
+
             bindingModal.btnShare.setOnClickListener {
                 val userEmail: String = bindingModal.etEmailShared.text.toString()
                 if(userEmail.isNotEmpty()) {
@@ -50,7 +54,7 @@ class TaskViewHolder(view: View, private val listener: TaskItemClickListener, pr
                 }
             }
 
-            dialog.show()
+            dialog.show((itemView.context as AppCompatActivity).supportFragmentManager, "user_dialog")
         }
         binding.btnDelete.setOnClickListener {
             val builder = AlertDialog.Builder(binding.btnDelete.context)
@@ -75,6 +79,4 @@ class TaskViewHolder(view: View, private val listener: TaskItemClickListener, pr
             adapterListener.onCompleteItem(adapterPosition)
         }
     }
-
-
 }

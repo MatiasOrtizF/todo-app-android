@@ -1,4 +1,4 @@
-package com.mfo.todoapp.ui.home.adapter
+package com.mfo.todoapp.ui.home.task.adapter
 
 import com.mfo.todoapp.domain.model.Todo
 

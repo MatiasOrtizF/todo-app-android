@@ -1,4 +1,4 @@
-package com.mfo.todoapp.ui.home.adapter
+package com.mfo.todoapp.ui.home.task.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mfo.todoapp.R
 import com.mfo.todoapp.domain.model.Todo
 
-class TaskAdapter(private var todos: MutableList<Todo>, private val listener: TaskItemClickListener): RecyclerView.Adapter<TaskViewHolder>(), TaskAdapterListener {
+class TaskAdapter(private var todos: MutableList<Todo>, private val listener: TaskItemClickListener): RecyclerView.Adapter<TaskViewHolder>(),
+    TaskAdapterListener {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val layoutInflater: LayoutInflater = LayoutInflater.from(parent.context)

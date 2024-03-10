@@ -20,7 +20,7 @@
             android:name=".ui.login.MainViewModel"
             android:exported="false" />
         <activity
-            android:name=".ui.home.TaskActivity"
+            android:name=".ui.home.task.TaskActivity"
             android:exported="false" />
         <activity
             android:name=".ui.login.MainActivity"

@@ -1,6 +1,5 @@
 package com.mfo.todoapp.ui.login
 
-import android.app.Application
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,19 +9,13 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.findNavController
-import com.mfo.todoapp.data.network.TodoApiService
 import com.mfo.todoapp.databinding.ActivityMainBinding
 import com.mfo.todoapp.domain.model.LoginRequest
-import com.mfo.todoapp.ui.home.TaskActivity
-import com.mfo.todoapp.utils.Constants
+import com.mfo.todoapp.ui.home.task.TaskActivity
 import com.mfo.todoapp.utils.UserData
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 @AndroidEntryPoint
 class MainActivity: AppCompatActivity() {

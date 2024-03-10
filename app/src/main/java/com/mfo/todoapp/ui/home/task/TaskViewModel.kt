@@ -1,4 +1,4 @@
-package com.mfo.todoapp.ui.home
+package com.mfo.todoapp.ui.home.task
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,21 +7,18 @@ import com.mfo.todoapp.domain.usecase.CompleteTodoUseCase
 import com.mfo.todoapp.domain.usecase.DeleteCompletedTodosUseCase
 import com.mfo.todoapp.domain.usecase.DeleteTodoUseCase
 import com.mfo.todoapp.domain.usecase.GetAllTodoUseCase
+import com.mfo.todoapp.domain.usecase.GetUsersInTodoSharedUseCase
 import com.mfo.todoapp.domain.usecase.PostTodoUseCase
-import com.mfo.todoapp.ui.login.MainState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class TaskViewModel @Inject constructor(private val getAllTodoUseCase: GetAllTodoUseCase, private val postTodoUseCase: PostTodoUseCase, private val deleteTodoUseCase: DeleteTodoUseCase, private val completeTodoUseCase: CompleteTodoUseCase, private val deleteCompletedTodosUseCase: DeleteCompletedTodosUseCase): ViewModel() {
+class TaskViewModel @Inject constructor(private val getAllTodoUseCase: GetAllTodoUseCase, private val postTodoUseCase: PostTodoUseCase, private val deleteTodoUseCase: DeleteTodoUseCase, private val completeTodoUseCase: CompleteTodoUseCase, private val deleteCompletedTodosUseCase: DeleteCompletedTodosUseCase, private val getUsersInTodoSharedUseCase: GetUsersInTodoSharedUseCase): ViewModel() {
 
     private var _state = MutableStateFlow<TaskState>(TaskState.Loading)
     val state: StateFlow<TaskState> = _state
@@ -88,6 +85,19 @@ class TaskViewModel @Inject constructor(private val getAllTodoUseCase: GetAllTod
                 if(result) {
                     getAll(authorization)
                 }
+            } catch (e: Exception) {
+                val errorMessage: String = e.message.toString()
+                _state.value = TaskState.Error(errorMessage)
+            }
+        }
+    }
+
+    fun getUsersInTodoShared(authorization: String, todoId: Long) {
+        viewModelScope.launch {
+            //_state.value = TaskState.Loading
+            try {
+                val result = (withContext(Dispatchers.IO) { getUsersInTodoSharedUseCase(authorization, todoId) })
+                println(result)
             } catch (e: Exception) {
                 val errorMessage: String = e.message.toString()
                 _state.value = TaskState.Error(errorMessage)
