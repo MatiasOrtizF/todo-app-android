@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mfo.todoapp.R
 import com.mfo.todoapp.domain.model.User
 
-class UserAdapter(private var users: MutableList<User>): RecyclerView.Adapter<UserViewHolder>() {
+class UserAdapter(private var users: List<User>): RecyclerView.Adapter<UserViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val layoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
         return UserViewHolder(layoutInflater.inflate(R.layout.user_list, parent, false))

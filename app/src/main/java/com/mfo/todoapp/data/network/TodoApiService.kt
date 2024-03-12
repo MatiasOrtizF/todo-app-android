@@ -4,6 +4,7 @@ import com.mfo.todoapp.domain.model.LoginRequest
 import com.mfo.todoapp.data.network.response.LoginResponse
 import com.mfo.todoapp.data.network.response.TodoResponse
 import com.mfo.todoapp.domain.model.Todo
+import com.mfo.todoapp.domain.model.TodoShared
 import com.mfo.todoapp.domain.model.User
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -48,4 +49,11 @@ interface TodoApiService {
         @Header ("Authorization") authorization: String,
         @Path ("id") todoId: Long
     ): List<User>
+
+    @POST("todo_shared/{id}")
+    suspend fun addTodoShared(
+        @Header ("Authorization") authorization: String,
+        @Path ("id") todoId: Long,
+        @Query ("userEmail") userEmail: String,
+    ): TodoShared
 }

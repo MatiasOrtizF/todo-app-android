@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mfo.todoapp.domain.model.User
 import com.mfo.todoapp.domain.usecase.GetUsersInTodoSharedUseCase
+import com.mfo.todoapp.domain.usecase.PostTodoSharedUseCase
+import com.mfo.todoapp.ui.home.task.TaskState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +15,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ModalDialogViewModel @Inject constructor(private val getUsersInTodoSharedUseCase: GetUsersInTodoSharedUseCase): ViewModel() {
+class ModalDialogViewModel @Inject constructor(private val getUsersInTodoSharedUseCase: GetUsersInTodoSharedUseCase, private val postTodoSharedUseCase: PostTodoSharedUseCase): ViewModel() {
     private var _state = MutableStateFlow<ModalState>(ModalState.Loading)
     val state: StateFlow<ModalState> = _state
 
@@ -37,4 +39,18 @@ class ModalDialogViewModel @Inject constructor(private val getUsersInTodoSharedU
             }
         }
     }
+
+    fun addTodoShared(authorization: String, todoId: Long, userEmail: String) {
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) { postTodoSharedUseCase(authorization, todoId, userEmail) }
+                getAllUsers(authorization, todoId)
+            } catch (e: Exception) {
+                val errorMessage: String = e.message.toString()
+                _state.value = ModalState.Error(errorMessage)
+            }
+        }
+    }
+
+
 }

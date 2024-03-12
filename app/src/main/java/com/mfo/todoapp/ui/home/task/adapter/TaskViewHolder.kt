@@ -31,28 +31,7 @@ class TaskViewHolder(view: View, private val listener: TaskItemClickListener, pr
             binding.btnCheck.setImageResource(R.drawable.circle)
         }
         binding.btnShared.setOnClickListener {
-            val context = it.context
-            //val dialog = BottomSheetDialog(context)
-            val view = LayoutInflater.from(context).inflate(R.layout.modal, null)
-            //dialog.setContentView(view)
-            val dialog = ModalDialogFragment.newInstance(todo.id)
-
-            val bindingModal = ModalBinding.bind(view)
-
-            val titleText = "Hello ${todo.user.name + " " + todo.user.lastName} share your todo"
-            bindingModal.tvTitle.text = titleText
-
-            bindingModal.tvTaskTodo.text = todo.task
-
-
-            //listener.getAllUsersInTodoShared(token, todo.id)
-
-            bindingModal.btnShare.setOnClickListener {
-                val userEmail: String = bindingModal.etEmailShared.text.toString()
-                if(userEmail.isNotEmpty()) {
-                    println(userEmail)
-                }
-            }
+            val dialog = ModalDialogFragment.newInstance(todo.id,todo.user.name, todo.user.lastName, todo.task)
 
             dialog.show((itemView.context as AppCompatActivity).supportFragmentManager, "user_dialog")
         }

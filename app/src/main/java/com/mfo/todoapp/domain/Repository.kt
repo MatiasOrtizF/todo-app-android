@@ -5,6 +5,7 @@ import com.mfo.todoapp.data.network.response.TodoResponse
 import com.mfo.todoapp.domain.model.LoginModel
 import com.mfo.todoapp.domain.model.LoginRequest
 import com.mfo.todoapp.domain.model.Todo
+import com.mfo.todoapp.domain.model.TodoShared
 import com.mfo.todoapp.domain.model.User
 import retrofit2.Call
 
@@ -19,4 +20,5 @@ interface Repository {
     suspend fun completeTodo(authorization: String, todoId: Long): Todo?
     suspend fun deleteCompletedTodos(authorization: String): Boolean
     suspend fun getUsersInTodoShared(authorization: String, todoId: Long): List<User>?
+    suspend fun addTodoShared(authorization: String, todoId: Long, userEmail: String): TodoShared?
 }

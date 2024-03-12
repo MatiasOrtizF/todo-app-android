@@ -8,6 +8,7 @@ import com.mfo.todoapp.domain.Repository
 import com.mfo.todoapp.domain.model.LoginModel
 import com.mfo.todoapp.domain.model.LoginRequest
 import com.mfo.todoapp.domain.model.Todo
+import com.mfo.todoapp.domain.model.TodoShared
 import com.mfo.todoapp.domain.model.User
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -115,6 +116,20 @@ class RepositoryImpl @Inject constructor(private val apiService: TodoApiService,
             users.map { it.toDomain() }
         }
             .onSuccess { users -> return users }
+            .onFailure { throwable ->
+                val errorMessage = when (throwable) {
+                    is HttpException -> throwable.response()?.errorBody()?.string()
+                    else -> null
+                } ?: "An error ocurred: ${throwable.message}"
+                Log.i("mfo", "Error occurred: $errorMessage")
+                throw Exception(errorMessage)
+            }
+        return null
+    }
+
+    override suspend fun addTodoShared(authorization: String, todoId: Long, userEmail: String): TodoShared? {
+        runCatching { apiService.addTodoShared(authorization, todoId, userEmail) }
+            .onSuccess { it.toDomain() }
             .onFailure { throwable ->
                 val errorMessage = when (throwable) {
                     is HttpException -> throwable.response()?.errorBody()?.string()
