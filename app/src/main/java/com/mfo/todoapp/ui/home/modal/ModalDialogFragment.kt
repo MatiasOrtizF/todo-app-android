@@ -3,7 +3,6 @@ package com.mfo.todoapp.ui.home.modal
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mfo.todoapp.R
 import com.mfo.todoapp.databinding.ModalBinding
 import com.mfo.todoapp.ui.home.modal.adapter.UserAdapter
-import com.mfo.todoapp.utils.UserData
+import com.mfo.todoapp.utils.PreferenceHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -87,13 +86,13 @@ class ModalDialogFragment: BottomSheetDialogFragment() {
 
     private fun sharedTodo() {
         binding.btnShare.setOnClickListener() {
-            val token: String = UserData.token
+            val preferences = PreferenceHelper.defaultPrefs(binding.btnShare.context)
+            val token: String = preferences.getString("jwt", "").toString()
             val userEmail: String = binding.etEmailShared.text.toString()
             val todoId = requireArguments().getLong("todoId")
             if(userEmail.isNotEmpty()) {
                 modalDialogViewModel.addTodoShared(token, todoId, userEmail)
                 binding.etEmailShared.setText("")
-
 
                 val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(binding.etEmailShared.windowToken, 0)
@@ -104,7 +103,8 @@ class ModalDialogFragment: BottomSheetDialogFragment() {
     private fun initUIState(todoId: Long) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val token: String = UserData.token
+                val preferences = PreferenceHelper.defaultPrefs(requireContext())
+                val token: String = preferences.getString("jwt", "").toString()
                 modalDialogViewModel.getAllUsers(token, todoId)
 
                 modalDialogViewModel.state.collect{

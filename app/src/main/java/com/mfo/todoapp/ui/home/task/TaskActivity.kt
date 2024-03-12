@@ -19,7 +19,8 @@ import com.mfo.todoapp.databinding.TodoListBinding
 import com.mfo.todoapp.ui.home.task.adapter.TaskAdapter
 import com.mfo.todoapp.ui.home.task.adapter.TaskItemClickListener
 import com.mfo.todoapp.ui.login.MainActivity
-import com.mfo.todoapp.utils.UserData
+import com.mfo.todoapp.utils.PreferenceHelper
+import com.mfo.todoapp.utils.PreferenceHelper.set
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -36,13 +37,14 @@ class TaskActivity: AppCompatActivity(), TaskItemClickListener {
         binding = ActivityTaskBinding.inflate(layoutInflater)
         todoListBinding = TodoListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initComponent()
-        initUIState()
+        val preferences = PreferenceHelper.defaultPrefs(this)
+        val token: String = preferences.getString("jwt", "").toString()
+        initComponent(token)
+        initUIState(token)
         initUI()
     }
 
-    private fun initComponent() {
-        val token: String = UserData.token
+    private fun initComponent(token: String) {
         initListeners(token)
     }
 
@@ -50,17 +52,20 @@ class TaskActivity: AppCompatActivity(), TaskItemClickListener {
         binding.btnLogOut.setOnClickListener() {
             logOut()
         }
-        binding.etTask.setOnEditorActionListener { _, actionId, _ ->
+        binding.etTask.setOnEditorActionListener { _, _, _ ->
             if(binding.etTask.text.toString().isNotEmpty()) {
-                if(actionId == EditorInfo.IME_ACTION_DONE) {
-                    val task: String = binding.etTask.text.toString()
-                    taskViewModel.addTodo(token, task)
-                }
+                val task: String = binding.etTask.text.toString()
+                taskViewModel.addTodo(token, task)
+                binding.etTask.setText("")
             }
             true
         }
         binding.btnClearCompleted.setOnClickListener {
             taskViewModel.deleteCompletedTodos(token)
+            //actualizar el size del todo
+            /*val itemCount: String = binding.recyclerView.adapter?.itemCount.toString()
+            val itemsLeftText = getString(R.string.txt_items_left, itemCount)
+            binding.itemsLeftText.text = itemsLeftText*/
         }
         binding.btnAllFilter.setOnClickListener {
             val filteredTodos = taskViewModel.getAllTodos()
@@ -76,10 +81,9 @@ class TaskActivity: AppCompatActivity(), TaskItemClickListener {
         }
     }
 
-    private fun initUIState() {
+    private fun initUIState(token: String) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val token: String = UserData.token
                 taskViewModel.getAll(token)
 
                 taskViewModel.state.collect{
@@ -115,7 +119,7 @@ class TaskActivity: AppCompatActivity(), TaskItemClickListener {
         binding.pb.isVisible = false
         val context = binding.root.context
         Toast.makeText(context, "Error: $error", Toast.LENGTH_SHORT).show()
-        if(error == "Unauthorized: invalid token") {
+        if(error == "Unauthorized: Invalid token") {
             logOut()
         }
     }
@@ -131,9 +135,19 @@ class TaskActivity: AppCompatActivity(), TaskItemClickListener {
     }
 
     private fun logOut() {
-        UserData.token = ""
+        clearSessionPreferences()
+        goToLogin()
+    }
+
+    private fun goToLogin() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        finish()
+    }
+
+    private fun clearSessionPreferences() {
+        val preferences = PreferenceHelper.defaultPrefs(this)
+        preferences["jwt"] = ""
     }
 
     private fun addNumberInItemsLeft(todosSize: Int) {

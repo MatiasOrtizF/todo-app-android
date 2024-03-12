@@ -1,17 +1,15 @@
 package com.mfo.todoapp.ui.home.task.adapter
 
 import android.graphics.Paint
-import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.mfo.todoapp.R
-import com.mfo.todoapp.databinding.ModalBinding
 import com.mfo.todoapp.databinding.TodoListBinding
 import com.mfo.todoapp.domain.model.Todo
 import com.mfo.todoapp.ui.home.modal.ModalDialogFragment
-import com.mfo.todoapp.utils.UserData
+import com.mfo.todoapp.utils.PreferenceHelper
 
 class TaskViewHolder(view: View, private val listener: TaskItemClickListener, private val adapterListener: TaskAdapterListener): RecyclerView.ViewHolder(view) {
     private val binding = TodoListBinding.bind(view)
@@ -19,7 +17,9 @@ class TaskViewHolder(view: View, private val listener: TaskItemClickListener, pr
 
 
     fun bind(todo: Todo) {
-        val token = UserData.token
+        val context = itemView.context
+        val preferences = PreferenceHelper.defaultPrefs(context)
+        val token: String = preferences.getString("jwt", "").toString()
         val todoId = todo.id
 
         binding.taskText.text = todo.task
@@ -33,14 +33,14 @@ class TaskViewHolder(view: View, private val listener: TaskItemClickListener, pr
         binding.btnShared.setOnClickListener {
             val dialog = ModalDialogFragment.newInstance(todo.id,todo.user.name, todo.user.lastName, todo.task)
 
-            dialog.show((itemView.context as AppCompatActivity).supportFragmentManager, "user_dialog")
+            dialog.show((context as AppCompatActivity).supportFragmentManager, "user_dialog")
         }
         binding.btnDelete.setOnClickListener {
             val builder = AlertDialog.Builder(binding.btnDelete.context)
             builder.setTitle("Delete todo")
             builder.setMessage("Are you sure you want to deleted this todo?")
 
-            builder.setPositiveButton("Yes") { dialog, which ->
+            builder.setPositiveButton("Yes") { _, _ ->
 
                 listener.onDeleteTodoClicked(token, todoId)
 

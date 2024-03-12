@@ -12,7 +12,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.mfo.todoapp.databinding.ActivityMainBinding
 import com.mfo.todoapp.domain.model.LoginRequest
 import com.mfo.todoapp.ui.home.task.TaskActivity
-import com.mfo.todoapp.utils.UserData
+import com.mfo.todoapp.utils.PreferenceHelper
+import com.mfo.todoapp.utils.PreferenceHelper.get
+import com.mfo.todoapp.utils.PreferenceHelper.set
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
@@ -23,13 +25,15 @@ class MainActivity: AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val mainViewModel: MainViewModel by viewModels()
 
-    private lateinit var retrofit: Retrofit
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initUI()
+
+        val preferences = PreferenceHelper.defaultPrefs(this)
+        if(preferences["jwt", ""].contains("."))
+            goToTask()
     }
 
     private fun initUI() {
@@ -38,6 +42,7 @@ class MainActivity: AppCompatActivity() {
             val loginRequest = LoginRequest(binding.etEmail.text.toString(), binding.etPassword.text.toString())
             println(loginRequest)
             mainViewModel.authenticationUser(loginRequest)
+            loadingState()
         }
     }
 
@@ -47,7 +52,7 @@ class MainActivity: AppCompatActivity() {
                 mainViewModel.state.collect{
                     when(it) {
                         is MainState.Error -> errorState(it.error)
-                        MainState.Loading -> loadingState()
+                        MainState.Loading -> {}
                         is MainState.Success -> successSate(it)
                     }
                 }
@@ -68,14 +73,23 @@ class MainActivity: AppCompatActivity() {
     private fun successSate(state: MainState.Success) {
         binding.pb.isVisible = false
         //binding.tokenTxt.text = state.token
-        UserData.token = state.token
+        val jwt: String = state.token
+        createSessionPreference(jwt)
+        goToTask()
         //saveToken(state.token)
-
-        val intent = Intent(this, TaskActivity::class.java)
-        startActivity(intent)
     }
 
     /*private fun saveToken(token: String) {
 
     }*/
+    private fun goToTask() {
+        val intent = Intent(this, TaskActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun createSessionPreference(jwt: String) {
+        val preferences = PreferenceHelper.defaultPrefs(this)
+        preferences["jwt"] = jwt
+    }
 }
